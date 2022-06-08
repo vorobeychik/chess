@@ -1,0 +1,9 @@
+.game_container{
+    z-index: 1;
+    position: relative;
+    display: flex;
+    width: 80%;
+    background-color: red;
+    padding: 10px 0;
+    justify-content: center;
+}

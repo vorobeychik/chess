@@ -1,0 +1,37 @@
+.cell{
+    width: 64px;
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cell img{
+    width: 62px;
+    height: 58px;
+    position: relative;
+}
+
+.black{
+    background-color: #769656;
+}
+
+.white{
+    background-color: #eeeed2;
+}
+
+
+.selected{
+    background-color: #f6f669;
+}
+
+.available{
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,.1);
+}
+
+.availableFigure{
+    background-color: green;
+}

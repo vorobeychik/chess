@@ -1,4 +1,11 @@
-.App {
-  text-align: center;
+.app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  background-color: #312e2b;
 }
+
+
+
 
