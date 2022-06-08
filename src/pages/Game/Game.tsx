@@ -4,8 +4,8 @@ import Board from "../../components/Board/Board";
 import styles from "./Game.module.css";
 import { store } from "../../store/store";
 import GameHistory from "../../components/GameHistory/GameHistory";
-import GameMenu from "../../components/GameControls/GameMenu";
-import GameChooseBot from "../../components/GameControls/GameChooseBot";
+import GameMenu from "../../components/GameMenu/GameMenu";
+import GameChooseBot from "../../components/GameChooseBot/GameChooseBot";
 import PlayWithFriends from "../../components/PlayWithFriends/FlayWithFriends";
 import Modal from "../../components/Modal/Modal";
 
