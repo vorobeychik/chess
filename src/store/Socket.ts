@@ -1,10 +1,11 @@
 import socketIo from "socket.io-client";
-import {prodServerOrigin} from "../constants/constants";
+import {devServerOrigin, prodServerOrigin} from "../constants/constants";
 
-const SERVER = prodServerOrigin;
+
+const server =  process.env.NODE_ENV === 'production' ?  prodServerOrigin : devServerOrigin
 
 export class Socket {
-    socket = socketIo(SERVER, {
+    socket = socketIo(server, {
         withCredentials: true,
         transports: ["websocket"],
     });

@@ -1,8 +1,10 @@
 import axios from "axios";
 import { User } from "../types/types";
-import {prodServerOrigin} from "../constants/constants";
+import {devServerOrigin, prodServerOrigin} from "../constants/constants";
 
-export const api = axios.create({ baseURL: prodServerOrigin });
+const server =  process.env.NODE_ENV === 'production' ?  prodServerOrigin : devServerOrigin
+
+export const api = axios.create({ baseURL:server});
 
 export async function userAuth(): Promise<User | null> {
     try {
