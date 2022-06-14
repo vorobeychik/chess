@@ -22,7 +22,7 @@ This project was created to evolution ts-bootcamp 2022
  - CSS Modules
  - EsLint
  - Pritier
- - Jest
+
 
 
 
