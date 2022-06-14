@@ -21,6 +21,7 @@ This project was created to evolution ts-bootcamp 2022
  - Socket.IO
  - EsLint
  - Pritier
+ - Jest
 
 
 
