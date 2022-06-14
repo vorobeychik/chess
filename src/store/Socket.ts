@@ -2,7 +2,7 @@ import socketIo from "socket.io-client";
 import {devServerOrigin, prodServerOrigin} from "../constants/constants";
 
 
-const server =  process.env.NODE_ENV === 'production' ?  prodServerOrigin : devServerOrigin
+const server =  prodServerOrigin;
 
 export class Socket {
     socket = socketIo(server, {

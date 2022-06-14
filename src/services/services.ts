@@ -2,7 +2,7 @@ import axios from "axios";
 import { User } from "../types/types";
 import {devServerOrigin, prodServerOrigin} from "../constants/constants";
 
-const server =  process.env.NODE_ENV === 'production' ?  prodServerOrigin : devServerOrigin
+const server =  prodServerOrigin;
 
 export const api = axios.create({ baseURL:server});
 
