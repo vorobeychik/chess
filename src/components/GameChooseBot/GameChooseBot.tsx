@@ -2,39 +2,24 @@ import React, { useState } from "react";
 import { store } from "../../store/store";
 import { Panels } from "../../enums/enums";
 import styles from "./GameChooseBot.module.css";
+import {bots} from "../../constants/constants";
+import classNames from "classnames";
 
-const bots = [{
-    name: "Sposob",
-    difficultyDescription: "Well-trained monkey",
-    description: "Jimmy wants to make sure you enjoy the game. He'll adapt to make it a little easier, or a little harder, depending on how you play.\n",
-    level: 0,
-}, {
-    name: "Bibmbo",
-    difficultyDescription: "Well-trained monkey",
-    description: "Jimmy wants to make sure you enjoy the game. He'll adapt to make it a little easier, or a little harder, depending on how you play.\n",
-    level: 1,
-}, {
-    name: "Lahat",
-    difficultyDescription: "Well-trained monkey",
-    description: "Jimmy wants to make sure you enjoy the game. He'll adapt to make it a little easier, or a little harder, depending on how you play.\n",
-    level: 2,
-}, {
-    name: "Lahat",
-    difficultyDescription: "Well-trained monkey",
-    description: "Jimmy wants to make sure you enjoy the game. He'll adapt to make it a little easier, or a little harder, depending on how you play.\n",
-    level: 3,
-}, {
-    name: "Lahat",
-    difficultyDescription: "Well-trained monkey",
-    description: "Jimmy wants to make sure you enjoy the game. He'll adapt to make it a little easier, or a little harder, depending on how you play.\n",
-    level: 4,
-}];
 
 const GameChooseBot = () => {
     const [botState, setBot] = useState(bots[0]);
 
     const botButtons = bots.map((bot, index) => {
-        return <button onClick={() => setBot(bot)} key={index}>{bot.level}</button>;
+        const  buttonClassName = classNames(
+            styles.bot_button_image,
+            {[styles.bot_button_image_selected]: botState.name === bot.name}
+        )
+
+        return  <img
+            src={bot.img_url}
+            className={buttonClassName}
+            onClick={() => setBot(bot)} key={index}
+        />
     });
 
     const buttonClickHandler = () => {
@@ -44,15 +29,23 @@ const GameChooseBot = () => {
 
     return (
         <div className={styles.menu_container}>
-            <p>{botState.name}</p>
-            <p>{botState.difficultyDescription}</p>
-            <p>{botState.description}</p>
-
-            <div>
-                {botButtons}
+            <div className={styles.header_container}>
+                <h1 className={styles.menu_header}>Choose Bot</h1>
             </div>
-
-            <button onClick={buttonClickHandler}>Выбрать</button>
+            <div className={styles.content_container}>
+                <img src={botState.img_url} className={styles.bot_image}/>
+                <div className={styles.rating_container}>
+                    <p className={styles.bot_name}>{botState.name}</p>
+                    <p className={styles.bot_rating}>({botState.rating})</p>
+                </div>
+                <p className={styles.bot_description}>{botState.description}</p>
+                <div className={styles.bot_button_container}>
+                    {botButtons}
+                </div>
+            </div>
+            <div className={styles.select_bot_button_container}>
+                <button className={styles.select_bot_button} onClick={buttonClickHandler}>Start play</button>
+            </div>
         </div>
     );
 };

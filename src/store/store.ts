@@ -9,6 +9,7 @@ import {User} from "./User";
 import {Game} from "./Game";
 import {History} from "./History";
 import {stat} from "fs";
+import {gameInitialState} from "../constants/constants";
 
 const socket = new Socket();
 
@@ -57,17 +58,17 @@ export class Store {
         });
 
         this.socket.socket.on("gameFinishedDraw", (gameStatus) => {
-            console.log('ничья')
+            this.game.setIsFinishGame(true);
             this.controller.openModal(gameEndStatuses.Draw);
         });
 
         this.socket.socket.on("gameFinishedWin", (gameStatus) => {
-            console.log('выйграл')
+            this.game.setIsFinishGame(true);
             this.controller.openModal(gameEndStatuses.Win);
         });
 
         this.socket.socket.on("gameFinishedLose", (gameStatus) => {
-            console.log('проиграл')
+            this.game.setIsFinishGame(true);
             this.controller.openModal(gameEndStatuses.Lose);
         });
 
@@ -98,6 +99,7 @@ export class Store {
         this.socket.socket.emit('surrender', this.game.roomName, this.user.userData, this.game.isBotGame)
     }
 
+
     findGame(){
         this.socket.socket.emit("findGame", this.user.userData);
     }
@@ -117,6 +119,20 @@ export class Store {
     move(to: string) {
         const move = { from: this.game.selectedCell?.position, to };
         this.socket.socket.emit("move", this.game.roomName, move, this.user.userData, this.game.isBotGame);
+    }
+
+    reloadGameState(){
+        this.game.gameState = gameInitialState;
+        this.game.players = {};
+        this.game.selectedCell = null;
+        this.game.timers = {};
+        this.game.withTimers = true;
+        this.game.withEnemyProfile = true;
+        this.game.isBotGame = false;
+        this.game.isFinished = false;
+        this.history.watchingHistory = false;
+        this.history.historyPoints = [];
+        this.history.currentHistoryPointIndex = 0;
     }
 
     async authorize() {

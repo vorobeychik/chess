@@ -41,3 +41,31 @@
 .button_icon:hover{
     filter: brightness(0.8);
 }
+
+.back_button_container{
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.back_button{
+    width: 60%;
+    padding: 1rem;
+    text-transform: uppercase;
+    background-color: #7fa650;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+}
+
+.back_button:hover{
+    filter: brightness(0.8);
+}
+
+.back_button:disabled{
+    filter: brightness(0.6);
+}

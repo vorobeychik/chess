@@ -5,11 +5,12 @@ import { store } from "../../store/store";
 import GameHistoryPoint from "./GameHistoryPoint";
 import {
     CaretLeftOutlined,
-    CaretRightOutlined,
+    CaretRightOutlined, FlagOutlined,
     PauseCircleOutlined,
     PlayCircleOutlined,
     StepBackwardOutlined, StepForwardOutlined
 } from '@ant-design/icons';
+import {Panels} from "../../enums/enums";
 
 const GameHistory = observer(() => {
     const historyPoints = store.history.historyPoints.map((historyPoint, index) => (
@@ -20,6 +21,12 @@ const GameHistory = observer(() => {
             historyPoint={historyPoint}
         />
     ));
+
+    const backToMenuClickHandler = () => {
+        store.controller.closeModal();
+        store.controller.openPanel(Panels.Menu);
+        store.reloadGameState();
+    };
 
     const nextHistoryClickHandler = () => {
         store.history.nextHistory()
@@ -65,9 +72,9 @@ const GameHistory = observer(() => {
                 {historyPoints}
             </div>
             <div className={styles.history_controls}>
+                <FlagOutlined  onClick={surrenderClick} className={styles.button_icon} />
                 <StepBackwardOutlined onClick={firstHistoryClickHandler} className={styles.button_icon} />
                 <CaretLeftOutlined onClick={prevHistoryClickHandler} className={styles.button_icon} />
-                <button onClick={surrenderClick}>surrender</button>
                 {
                     store.history.isWatchingReplay ?
                         <PauseCircleOutlined onClick={stopReplayHistoryClickHandler}  className={styles.button_icon}/> :
@@ -75,6 +82,15 @@ const GameHistory = observer(() => {
                 }
                 <CaretRightOutlined onClick={nextHistoryClickHandler} className={styles.button_icon} />
                 <StepForwardOutlined onClick={lastHistoryClickHandler} className={styles.button_icon} />
+            </div>
+            <div className={styles.back_button_container}>
+                <button
+                    className={styles.back_button}
+                    onClick={backToMenuClickHandler}
+                    disabled={!store.game.isFinished}
+                >
+                    back to menu
+                </button>
             </div>
         </div>
     );

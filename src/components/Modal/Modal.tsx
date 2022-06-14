@@ -20,6 +20,7 @@ const Modal:FC<ModalProps> = observer(({ status }) => {
     const backToMenuClickHandler = () => {
         store.controller.closeModal();
         store.controller.openPanel(Panels.Menu);
+        store.reloadGameState();
     };
 
     const isWinner = status === gameEndStatuses.Win;

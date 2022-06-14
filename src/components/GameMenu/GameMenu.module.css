@@ -28,6 +28,12 @@
     margin-top: 0.3rem;
 }
 
+.menu_timer{
+    font-size: 1.2rem;
+    color: white;
+    margin-top: 0.3rem;
+}
+
 .menu_item_title{
     font-size: 1.2rem;
     color: white;
@@ -50,4 +56,9 @@
 
 .menu_item_text_container{
     margin-left: 0.7rem;
+}
+
+.menu_item_timer_container{
+    display: flex;
+    align-items: center;
 }

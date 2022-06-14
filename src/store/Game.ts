@@ -16,10 +16,11 @@ export class Game {
     withTimers: boolean = true;
     withEnemyProfile: boolean = true;
     isBotGame: boolean = false;
+    isFinished: boolean = false;
 
     constructor(public socket: Socket) {
         this.socket = socket;
-        /*  this.socket.socket.emit('newGame'); */
+
 
         makeAutoObservable(this, {
             socket: false,
@@ -68,6 +69,10 @@ export class Game {
                 }
             });
         });
+    }
+
+    setIsFinishGame(isFinished: boolean){
+        this.isFinished = isFinished;
     }
 
     setBotGame(isBotGame: boolean){
