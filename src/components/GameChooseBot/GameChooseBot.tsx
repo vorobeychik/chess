@@ -39,7 +39,7 @@ const GameChooseBot = () => {
 
     const buttonClickHandler = () => {
         store.startGameWithBot(botState.level);
-        store.openPanel(Panels.Board, Panels.History);
+        store.game.setBotGame(true);
     };
 
     return (

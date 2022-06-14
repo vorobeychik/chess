@@ -1,209 +1,143 @@
-import { makeAutoObservable } from "mobx";
-import { Cell } from "../models/Cell";
-import { Socket } from "./Socket";
-import { GameState, History, User } from "../types/types";
-import { userAuth } from "../services/services";
-import { Colors, Panels } from "../enums/enums";
-import { convertSecondsToTime, createMatrix } from "../utils/utils";
-import { boardSize, gameInitialState, letters } from "../constants/constants";
+import {makeAutoObservable} from "mobx";
+import {Socket} from "./Socket";
+import {GameState, History as HistoryType} from "../types/types";
+import {userAuth} from "../services/services";
+import {gameEndStatuses, Panels} from "../enums/enums";
+import {createBoard} from "../utils/utils";
+import {UIController} from "./UIController";
+import {User} from "./User";
+import {Game} from "./Game";
+import {History} from "./History";
+import {stat} from "fs";
 
 const socket = new Socket();
 
-type Controller = Record<string, boolean>;
-
 export class Store {
-    user: User | null = null;
-    isLoading = false;
-    isStarted = false;
-    selectedCell: Cell | null = null;
-    watchingHistory = false;
-    history: History[] = [];
-    socket = socket;
-    players: any = {};
-    roomName = "";
-    timers: Record<string, string> = {};
-    gameStatus: Record<string, string> = {};
-    isModalOpen = false;
-    gameState: GameState = gameInitialState;
-    currentGameState: GameState = gameInitialState;
 
-    controller: Controller = {
-        menu: true,
-        board: false,
-        chooseBot: false,
-        history: false,
-        friends: false,
-    };
+    socket = socket;
+    controller: UIController;
+    history: History;
+    user: User;
+    game: Game;
+
 
     constructor() {
         makeAutoObservable(this);
+        this.controller = new UIController();
+        this.user = new User();
+        this.game = new Game(socket);
+        this.history = new History();
 
-        this.socket.socket.on("getGameState", (sate: GameState, history: History[]) => {
-            this.gameState = sate;
-            this.currentGameState = sate;
-            this.history = history;
+        this.socket.socket.on("getGameState", (state: GameState, history: HistoryType[]) => {
+            console.log('сработал')
+            console.log(state)
+            this.game.setGameState(state);
+            this.history.setHistory(history);
         });
 
         this.socket.socket.on("startGame", (roomName: string, players: any) => {
-            this.setRoomName(roomName);
-            this.setPlayer(players);
-            this.openPanel(Panels.Board, Panels.History);
+            console.log('началась',players)
+            this.game.setRoomName(roomName);
+            this.game.setPlayer(players);
+            this.controller.openPanel(Panels.Board, Panels.History);
         });
 
         this.socket.socket.on("timerTick", (timers: any) => {
-            this.setTimers(timers);
+            if( this.user.userData){
+                this.game.setTimers(timers, this.user.userData?.id);
+            }
+
         });
 
         this.socket.socket.on("setTimers", (timers: any) => {
-            this.setTimers(timers);
-        });
-
-        this.socket.socket.on("gameFinished", (gameStatus) => {
-            this.openModal();
-            this.setGameStatus(gameStatus);
-        });
-    }
-
-    openModal() {
-        this.isModalOpen = true;
-    }
-
-    closeModal() {
-        this.isModalOpen = false;
-    }
-
-    openPanel(...panelNames: Panels[]) {
-        Object.keys(this.controller).forEach((key) => {
-            this.controller[key] = !!panelNames.find((panel) => panel === key);
-        });
-    }
-
-    setGameStatus(gameStatus: Record<string, string>) {
-        this.gameStatus = gameStatus;
-    }
-
-    setTimers(timers: Record<string, number>) {
-        const timerKeys = Object.keys(timers);
-        const convertedTimers: Record<string, string> = {};
-        if (this.user) {
-            timerKeys.forEach((key) => {
-                convertedTimers[this.user?.id.toString() === key ? "yourTimer" : "oponentTimer"] = convertSecondsToTime(timers[key]);
-            });
-        }
-
-        this.timers = convertedTimers;
-    }
-
-    setPlayer(players: any) {
-        const playerKeys = Object.keys(players);
-        const result: Record<string, any> = {};
-        playerKeys.forEach((key) => {
-            if (this.user?.id && key === this.user?.id.toString()) {
-                result.you = players[key];
-            } else {
-                result.oponent = players[key];
+            console.log('сработали таймеры',timers);
+            if( this.user.userData){
+                this.game.setTimers(timers, this.user.userData?.id);
             }
         });
 
-        this.players = result;
+        this.socket.socket.on("gameFinishedDraw", (gameStatus) => {
+            console.log('ничья')
+            this.controller.openModal(gameEndStatuses.Draw);
+        });
+
+        this.socket.socket.on("gameFinishedWin", (gameStatus) => {
+            console.log('выйграл')
+            this.controller.openModal(gameEndStatuses.Win);
+        });
+
+        this.socket.socket.on("gameFinishedLose", (gameStatus) => {
+            console.log('проиграл')
+            this.controller.openModal(gameEndStatuses.Lose);
+        });
+
+        this.socket.socket.on("gameFoundCreateRoom", (roomName: string) => {
+            console.log('found create')
+                this.createRoom(roomName);
+        })
+
+        this.socket.socket.on("gameFound", (roomName: string) => {
+            console.log('found ')
+            this.joinRoom(roomName);
+        })
+
+        this.socket.socket.on("offTimers",() => {
+            this.game.turnOffTimers()
+        })
+
+        this.socket.socket.on("offEnemyProfile",() => {
+            this.game.turnOffEnemyProfile();
+        })
+
+        this.socket.socket.on('setBotGame', () => {
+            this.game.setBotGame(true);
+        })
     }
 
-    async authorize() {
-        this.isLoading = true;
-        const user = await userAuth();
-        this.isLoading = false;
-        if (user) {
-            this.user = user;
-        }
+    surrender(){
+        this.socket.socket.emit('surrender', this.game.roomName, this.user.userData, this.game.isBotGame)
     }
 
-    setRoomName(roomName: string) {
-        this.roomName = roomName;
-    }
-
-    get isAuth() {
-        return !!this.user;
-    }
-
-    get isYourTurn() {
-        return this.players.you.side === this.gameState.turn;
-    }
-
-    setSelectedCell(cell: Cell | null) {
-        this.selectedCell = cell;
+    findGame(){
+        this.socket.socket.emit("findGame", this.user.userData);
     }
 
     joinRoom(roomName: string) {
-        this.socket.socket.emit("joinRoom", roomName, this.user);
+        this.socket.socket.emit("joinRoom", roomName, this.user.userData);
     }
 
     createRoom(roomName: string) {
-        this.socket.socket.emit("createRoom", roomName, this.user);
+        this.socket.socket.emit("createRoom", roomName, this.user.userData);
     }
 
     startGameWithBot(botLevel: number) {
-        this.socket.socket.emit("gameWithBot", botLevel);
-        this.isStarted = true;
-    }
-
-    watchHistory(gameState: GameState) {
-        this.watchingHistory = true;
-        this.gameState = gameState;
-    }
-
-    backToGame() {
-        this.watchingHistory = false;
-        this.gameState = this.currentGameState;
-    }
-
-    highLiteCells() {
-        this.board.forEach((row) => {
-            row.forEach((cell) => {
-                if (this.availableMoves && this.availableMoves.includes(cell.position)) {
-                    cell.available = true;
-                } else {
-                    cell.available = false;
-                }
-            });
-        });
+        this.socket.socket.emit("startGameWithBot", this.user.userData ,botLevel);
     }
 
     move(to: string) {
-        const move = { from: this.selectedCell?.position, to };
-        this.socket.socket.emit("move", this.roomName, move);
+        const move = { from: this.game.selectedCell?.position, to };
+        this.socket.socket.emit("move", this.game.roomName, move, this.user.userData, this.game.isBotGame);
     }
 
-    setStartGame(isGameStarted: boolean) {
-        this.isStarted = isGameStarted;
+    async authorize() {
+        this.user.isLoading = true;
+        const user = await userAuth();
+        if(!!user?.inGame){
+            this.socket.socket.emit("reconnect", user.inGame,user);
+        }
+        this.user.isLoading = false;
+        if (user) {
+            this.user.setUserData(user);
+        }
     }
 
-    get isWinner() {
-        if (this.user) {
-            return this.gameStatus.winner === this.user.id.toString();
+
+
+    get historyPoint(){
+        if(this.game.players.you.side){
+            return createBoard(this.game.players.you.side,this.history.historyPoints[this.history.currentHistoryPointIndex].currentHistoryState);
         }
 
-        return false;
-    }
-
-    get board() {
-        return createMatrix(boardSize).map((row, rowIndex) => {
-            return row.map((cell, elementIndex) => {
-                const cellIndex = this.players.you.side === "white" ? (8 - rowIndex) : rowIndex + 1;
-                const position = letters[elementIndex] + cellIndex;
-                const cellColor = (rowIndex + elementIndex) % 2 === 0 ? Colors.WHITE : Colors.BLACK;
-                if (this.gameState.pieces[position]) {
-                    return new Cell(position, false, cellColor, this.gameState.pieces[position]);
-                }
-
-                return new Cell(position, false, cellColor, null);
-            });
-        });
-    }
-
-    get availableMoves() {
-        if (this.selectedCell) {
-            return this.gameState.moves[this.selectedCell?.position];
-        }
     }
 }
 

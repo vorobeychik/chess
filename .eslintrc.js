@@ -1,3 +1,4 @@
+/*
 module.exports = {
     env: {
         browser: true,
@@ -285,7 +286,7 @@ module.exports = {
         "import/no-default-export": 0,
         "import/no-dynamic-require": "warn",
         "import/no-extraneous-dependencies": "off",
-        "import/no-unassigned-import": ["error", { allow: ["react", "**/*.css"] }],
+        "import/no-unassigned-import": ["error", { allow: ["react", "**!/!*.css"] }],
         "import/no-webpack-loader-syntax": "off",
         "import/prefer-default-export": "off",
         "import-newlines/enforce": [
@@ -348,3 +349,4 @@ module.exports = {
         "jsx-a11y/no-static-element-interactions": "off",
     },
 };
+*/

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.1",
     "@testing-library/user-event": "^13.5.0",
@@ -13,7 +14,6 @@
     "@types/react-dom": "^18.0.0",
     "axios": "^0.26.1",
     "dotenv": "^16.0.1",
-    "js-chess-engine": "^1.0.2",
     "eslint": "^8.13.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
@@ -22,6 +22,7 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
+    "js-chess-engine": "^1.0.2",
     "lodash": "^4.17.21",
     "mobx": "^6.5.0",
     "mobx-react-lite": "^3.3.0",

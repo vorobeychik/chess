@@ -1,7 +1,8 @@
 import axios from "axios";
 import { User } from "../types/types";
+import {prodServerOrigin} from "../constants/constants";
 
-export const api = axios.create({ baseURL: "http://localhost:4000" });
+export const api = axios.create({ baseURL: prodServerOrigin });
 
 export async function userAuth(): Promise<User | null> {
     try {

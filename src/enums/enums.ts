@@ -10,3 +10,10 @@ export enum Panels {
     Board = "board",
     Friends = "friends",
 }
+
+
+export enum gameEndStatuses{
+    Win = 'You Win',
+    Lose = 'You Lose',
+    Draw = 'Draw'
+}

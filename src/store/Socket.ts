@@ -1,6 +1,7 @@
 import socketIo from "socket.io-client";
+import {prodServerOrigin} from "../constants/constants";
 
-const SERVER = "http://localhost:4000";
+const SERVER = prodServerOrigin;
 
 export class Socket {
     socket = socketIo(SERVER, {

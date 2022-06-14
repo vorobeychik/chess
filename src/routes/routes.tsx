@@ -10,7 +10,7 @@ import Login from "../pages/Login/Login";
 import Game from "../pages/Game/Game";
 
 const Routes = observer(() => {
-    if (store.isAuth) {
+    if (store.user.isAuth) {
         return (
             <Router>
                 <RouterRotes>

@@ -2,3 +2,46 @@
     display: flex;
     color: white;
 }
+
+.history_point_active{
+    display: flex;
+    color: blue;
+}
+
+.even{
+    background-color: hsla(0,0%,100%,.06);
+}
+
+.history_point{
+    display: flex;
+    padding: 0.5rem;
+}
+
+.history_point:hover{
+    cursor: pointer;
+    filter: brightness(0.8);
+}
+
+.odd{
+    background-color: hsla(0,0%,100%,.02);
+}
+
+.turn{
+    color: hsla(0,0%,100%,.4);
+    padding: 0.3rem;
+}
+
+.moves_container{
+    display: flex;
+    color: hsla(0,0%,100%,.65);
+    width: 15%;
+    justify-content: space-between;
+    margin-left: 0.5rem;
+    align-items: center;
+}
+
+.turn_active{
+    background-color: hsla(0,0%,100%,.2);
+    border-radius: 4px;
+
+}

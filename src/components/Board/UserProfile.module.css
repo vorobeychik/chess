@@ -1,0 +1,30 @@
+.profile_container{
+    padding: 0.3rem 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.icon{
+    width: 40px;
+    height: 40px;
+    border-radius: 3px;
+}
+
+.user_data_container{
+    display: flex;
+}
+
+.user_info{
+    font-weight: 500;
+    margin-left: 0.5rem;
+    color:  hsla(0,0%,100%,.65);
+}
+
+.timer{
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 1.5rem;
+}

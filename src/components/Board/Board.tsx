@@ -3,41 +3,52 @@ import { observer } from "mobx-react-lite";
 import styles from "./Board.module.css";
 import BoardCell from "./BoardCell";
 import { store } from "../../store/store";
+import {Cell} from "../../models/Cell";
+import UserProfile from "./UserProfile";
+
 
 const Board = observer(() => {
     useEffect(() => {
-        store.highLiteCells();
-    }, [store.selectedCell]);
+        store.game.highLiteCells();
+    }, [store.game.selectedCell]);
 
-    const cells = useMemo(() => store.board.map((row, index) => (
-        <React.Fragment key={index}>
-            {row.map((cell) => (
+    const board = store.history.watchingHistory ? store.historyPoint! : store.game.board;
+    const history = store.history;
+
+    const cells = useMemo(() => board.map((row, index) => {
+        const isHistoryAvailable = history.historyPoints.length;
+        return row.map((cell) => (
                 <BoardCell
                     available={cell.available}
                     cell={cell}
-                    selected={cell.position === store.selectedCell?.position}
+                    historyMove = {isHistoryAvailable ? history.historyPoints[history.currentHistoryPointIndex].from == cell.position || history.historyPoints[history.currentHistoryPointIndex].to == cell.position : false}
+                    selected={cell.position === store.game.selectedCell?.position }
                     key={cell.id}
                 />
-            ))}
-        </React.Fragment>
-    ),
-    ), [store.board, store.selectedCell]);
-
+            ))
+    },
+    ), [board, store.game.selectedCell]);
+    console.log(store.game.players,store.game.players.oponent);
     return (
-        <div>
-            <div>
-                <p>{store.players.oponent.userData.login}</p>
-                <img src={store.players.oponent.userData.avatar_url} height="20px" />
-                <p>{store.timers && store.timers.oponentTimer}</p>
-            </div>
+        <div className={styles.board_container}>
+            {
+                store.game.withEnemyProfile &&  <UserProfile
+                    avatar={store.game.players.oponent.userData.avatar_url}
+                    name={store.game.players.oponent.userData.login}
+                    rating={store.game.players.oponent.userData.rating}
+                    timer={store.game.timers.oponent}
+                />
+            }
+
             <div className={styles.board}>
                 {cells}
             </div>
-            <div>
-                <p>{store.players.you.userData.login}</p>
-                <img src={store.players.you.userData.avatar_url} height="20px" />
-                <p>{store.timers && store.timers.yourTimer}</p>
-            </div>
+            <UserProfile
+                avatar={store.game.players.you.userData.avatar_url}
+                name={store.game.players.you.userData.login}
+                rating={store.game.players.you.userData.rating}
+                timer={store.game.timers.you}
+            />
         </div>
     );
 });

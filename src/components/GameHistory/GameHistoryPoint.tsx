@@ -2,26 +2,51 @@ import React, { FC } from "react";
 import styles from "./GameHistoryPoint.module.css";
 import { History } from "../../types/types";
 import { store } from "../../store/store";
+import {observer} from "mobx-react-lite";
+import classNames from "classnames";
+
 
 interface GameHistoryPointProps {
-    historyPoints: History[];
+    historyPoint: History;
+    turn: number;
+    isActive: boolean;
 }
 
-const GameHistoryPoint: FC<GameHistoryPointProps> = ({ historyPoints }) => {
-    const firstHistoryClickHandler = () => {
-        store.watchHistory(historyPoints[0].currentHistoryState);
-    };
+const GameHistoryPoint: FC<GameHistoryPointProps> = observer(({ historyPoint, turn,isActive }) => {
 
-    const secondHistoryClickHandler = () => {
-        store.watchHistory(historyPoints[1].currentHistoryState);
-    };
+    const historyPointClickHandler = () => {
+        console.log('нажал')
+        store.history.watchHistory(historyPoint.currentHistoryState, turn);
+    }
+
+
+
+    const historyPointClassName = classNames(
+        styles.history_point,
+
+        turn % 2 === 0 ? styles.odd : styles.even,
+
+    );
+
+    const moveClassname = classNames(
+        styles.moves_container,
+/*        {[styles.turn_active]: isActive}*/
+    )
+
+    const turnClassName = classNames(
+        styles.turn,
+        {[styles.turn_active]: isActive}
+    )
 
     return (
-        <div className={styles.history_point}>
-            <p onClick={firstHistoryClickHandler}>{historyPoints[0].to}</p>
-            {historyPoints[1] && <p onClick={secondHistoryClickHandler}>{historyPoints[1].to}</p>}
+        <div className={historyPointClassName} onClick={historyPointClickHandler}>
+            <span className={turnClassName}>{`${turn}.`}</span>
+            <div className={moveClassname}>
+                <p>{historyPoint.from}</p>
+                <p>{historyPoint.to}</p>
+            </div>
         </div>
     );
-};
+});
 
 export default GameHistoryPoint;

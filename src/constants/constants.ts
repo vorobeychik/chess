@@ -48,3 +48,6 @@ export const gameInitialState: GameState = {
     turn: "white",
 
 };
+
+export const prodServerOrigin = 'https://evo-chess-server.herokuapp.com/';
+export const devServerOrigin = 'http://localhost:4000/'

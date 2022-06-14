@@ -6,16 +6,48 @@
 
 }
 
+.header_container{
+    background: radial-gradient(40rem 15rem at top center,rgba(0,0,0,.14) 40%,rgba(2,1,1,0) 0);
+    height: 100px;
+}
+
 .menu_item{
-    font-size: 20px;
-    color: white;
+
     padding: 1rem;
     margin: 1rem;
     background-color: #1f1e1b;
     transition: 0.3s;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.menu_item_description{
+    font-size: 0.8rem;
+    color: hsla(0,0%,100%,.65);
+    margin-top: 0.3rem;
+}
+
+.menu_item_title{
+    font-size: 1.2rem;
+    color: white;
 }
 
 .menu_item:hover{
     filter: brightness(0.8);
+}
+
+.menu_header{
+    color: white;
+    text-align: center;
+    padding-top: 1.5rem;
+}
+
+.menu_item_icon{
+    width: 36px;
+    height: 40px;
+}
+
+.menu_item_text_container{
+    margin-left: 0.7rem;
 }

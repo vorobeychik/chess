@@ -3,5 +3,41 @@
     background-color: #272522;
     width: 40%;
     border-radius: 5px;
+    margin-left: 0.5rem;
+}
 
+.history_points_container{
+    height: 100%;
+    max-height: 50%;
+    overflow-y: scroll;
+}
+
+.history_points_container::-webkit-scrollbar {
+    width: 0;
+}
+
+.menu_header{
+    color: white;
+    text-align: center;
+    padding-top: 1.5rem;
+}
+
+.header_container{
+    background: radial-gradient(40rem 15rem at top center,rgba(0,0,0,.14) 40%,rgba(2,1,1,0) 0);
+    height: 100px;
+}
+
+.button_icon{
+    color:hsla(0,0%,100%,.65);
+    font-size: 1.5rem;
+}
+
+.history_controls{
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+.button_icon:hover{
+    filter: brightness(0.8);
 }
