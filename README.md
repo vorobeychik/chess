@@ -15,12 +15,12 @@ This project was created to evolution ts-bootcamp 2022
 
 ## Tech
 
- - [Create React App] 
- - [TypeScript] 
- - [MobX] 
- - [Socket.IO] 
- - [EsLint] 
- - [Pritier]
+ - React
+ - TypeScript
+ - MobX
+ - Socket.IO
+ - EsLint
+ - Pritier
 
 
 
