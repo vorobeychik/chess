@@ -19,6 +19,7 @@ This project was created to evolution ts-bootcamp 2022
  - TypeScript
  - MobX
  - Socket.IO
+ - CSS Modules
  - EsLint
  - Pritier
  - Jest
