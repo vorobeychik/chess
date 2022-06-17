@@ -11,11 +11,11 @@ import R from "../assets/images/wr.png";
 import q from "../assets/images/bq.png";
 import Q from "../assets/images/wq.png";
 import { GameState } from "../types/types";
-import botImage from '../assets/images/bot1.png'
-import botImage2 from '../assets/images/bot2.png'
-import botImage3 from '../assets/images/bot3.png'
-import botImage4 from '../assets/images/bot4.png'
-import botImage5 from '../assets/images/bot5.png'
+import botImage from "../assets/images/bot1.png";
+import botImage2 from "../assets/images/bot2.png";
+import botImage3 from "../assets/images/bot3.png";
+import botImage4 from "../assets/images/bot4.png";
+import botImage5 from "../assets/images/bot5.png";
 
 export const figureSkins = {
     B,
@@ -86,5 +86,5 @@ export const bots = [{
     level: 4,
 }];
 
-export const prodServerOrigin = 'https://evo-chess-server.herokuapp.com/';
-export const devServerOrigin = 'http://localhost:4000/'
+export const prodServerOrigin = "https://evo-chess-server.herokuapp.com/";
+export const devServerOrigin = "http://localhost:4000/";

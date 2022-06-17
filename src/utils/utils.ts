@@ -1,30 +1,20 @@
-import {GameState, History, Sides} from "../types/types";
-import {Colors, gameEndStatuses} from "../enums/enums";
-import {boardSize, letters} from "../constants/constants";
-import {Cell} from "../models/Cell";
+import { GameState, Sides } from "../types/types";
+import { Colors, gameEndStatuses } from "../enums/enums";
+import { boardSize, letters } from "../constants/constants";
+import { Cell } from "../models/Cell";
 
 export function createMatrix(size: number): number[][] {
     return Array(size).fill(new Array(size).fill(0));
 }
 
-export function createPares(arr: History[]): History[][] {
-    const result = [];
-
-    for (let i = 0; i < arr.length; i += 2) {
-        result.push(arr.slice(i, i + 2));
-    }
-
-    return result;
-}
-
-export function createBoard(playerSide: Sides, gameState:GameState){
+export function createBoard(playerSide: Sides, gameState: GameState) {
     return createMatrix(boardSize).map((row, rowIndex) => {
         return row.map((cell, elementIndex) => {
             const cellIndex = playerSide === "white" ? (8 - rowIndex) : rowIndex + 1;
             const position = letters[elementIndex] + cellIndex;
             const colorIndex = (rowIndex + elementIndex) % 2;
-            const isRevesed =  playerSide === "white" ? colorIndex === 0 : colorIndex !== 0;
-            const cellColor = isRevesed  ? Colors.WHITE : Colors.BLACK;
+            const isRevesed = playerSide === "white" ? colorIndex === 0 : colorIndex !== 0;
+            const cellColor = isRevesed ? Colors.WHITE : Colors.BLACK;
             if (gameState.pieces[position]) {
                 return new Cell(position, false, cellColor, gameState.pieces[position]);
             }
@@ -47,14 +37,13 @@ export function convertSecondsToTime(time: number) {
     return convertedTime;
 }
 
-
-export function chooseRatingText(gameEndStatus:gameEndStatuses){
-    switch (gameEndStatus){
+export function chooseRatingText(gameEndStatus: gameEndStatuses) {
+    switch (gameEndStatus) {
         case gameEndStatuses.Draw:
-            return '+0'
+            return "+0";
         case gameEndStatuses.Lose:
-            return '-25'
+            return "-25";
         case gameEndStatuses.Win:
-            return '+25'
+            return "+25";
     }
 }

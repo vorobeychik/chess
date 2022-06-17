@@ -1,48 +1,45 @@
 import { makeAutoObservable } from "mobx";
-import { Socket } from "./Socket";
+import { Socket } from "socket.io-client";
 import { Cell } from "../models/Cell";
-import {FigureNames, GameState, Players, Sides} from "../types/types";
-import { boardSize, gameInitialState, letters} from "../constants/constants";
-import {convertSecondsToTime, createBoard, createMatrix} from "../utils/utils";
-import { Colors } from "../enums/enums";
-import board from "../components/Board/Board";
+import { GameState, Players } from "../types/types";
+import { gameInitialState } from "../constants/constants";
+import { convertSecondsToTime, createBoard } from "../utils/utils";
 
 export class Game {
-    players: Record<string,Players> = {};
+    players: Record<string, Players> = {};
     roomName = "";
     selectedCell: Cell | null = null;
     gameState: GameState = gameInitialState;
     timers: Record<string, string> = {};
-    withTimers: boolean = true;
-    withEnemyProfile: boolean = true;
-    isBotGame: boolean = false;
-    isFinished: boolean = false;
+    withTimers = true;
+    withEnemyProfile = true;
+    isBotGame = false;
+    isFinished = false;
 
     constructor(public socket: Socket) {
         this.socket = socket;
-
 
         makeAutoObservable(this, {
             socket: false,
         }, { autoBind: true });
     }
 
-    setGameState(gameState: GameState){
+    setGameState(gameState: GameState) {
         this.gameState = gameState;
     }
 
-     setTimers(timers: Record<string, number>, userId: number) {
+    setTimers(timers: Record<string, number>, userId: number) {
         const timerKeys = Object.keys(timers);
         const convertedTimers: Record<string, string> = {};
 
         timerKeys.forEach((key) => {
-           convertedTimers[userId.toString() === key ? "you" : "oponent"] = convertSecondsToTime(timers[key]);
+            convertedTimers[userId.toString() === key ? "you" : "oponent"] = convertSecondsToTime(timers[key]);
         });
 
         this.timers = convertedTimers;
     }
 
-     setPlayer(players: any) {
+    setPlayer(players: any) {
         console.log(players);
         this.players = players;
     }
@@ -71,20 +68,19 @@ export class Game {
         });
     }
 
-    setIsFinishGame(isFinished: boolean){
+    setIsFinishGame(isFinished: boolean) {
         this.isFinished = isFinished;
     }
 
-    setBotGame(isBotGame: boolean){
+    setBotGame(isBotGame: boolean) {
         this.isBotGame = isBotGame;
     }
 
     get board() {
-        if(this.players.you){
-            return createBoard(this.players.you.side,this.gameState);
+        if (this.players.you) {
+            return createBoard(this.players.you.side, this.gameState);
         }
-        return []
-
+        return [];
     }
 
     get availableMoves() {
@@ -93,18 +89,15 @@ export class Game {
         }
     }
 
-    turnOffTimers(){
+    turnOffTimers() {
         this.withTimers = false;
     }
 
-    turnOnTimers(){
+    turnOnTimers() {
         this.withTimers = true;
     }
 
-
-    turnOffEnemyProfile(){
+    turnOffEnemyProfile() {
         this.withEnemyProfile = false;
     }
-
-
 }

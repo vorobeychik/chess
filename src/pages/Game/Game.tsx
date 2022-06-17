@@ -8,15 +8,11 @@ import GameMenu from "../../components/GameMenu/GameMenu";
 import GameChooseBot from "../../components/GameChooseBot/GameChooseBot";
 import PlayWithFriends from "../../components/PlayWithFriends/FlayWithFriends";
 import Modal from "../../components/Modal/Modal";
-import {createBoard} from "../../utils/utils";
 
 const Game = observer(() => {
-
-
-
     return (
         <div className={styles.game_container}>
-            {store.controller.isModalOpen && <Modal status={store.controller.gameEndModal}/>}
+            {store.controller.isModalOpen && <Modal status={store.controller.gameEndModal} />}
             {store.controller.controller.board && <Board />}
             {store.controller.controller.menu && <GameMenu />}
             {store.controller.controller.chooseBot && <GameChooseBot />}

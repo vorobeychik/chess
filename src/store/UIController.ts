@@ -1,5 +1,5 @@
-import {makeAutoObservable} from "mobx";
-import {gameEndStatuses, Panels} from "../enums/enums";
+import { makeAutoObservable } from "mobx";
+import { gameEndStatuses, Panels } from "../enums/enums";
 
 export class UIController {
     controller: Record<string, boolean> = {
@@ -14,8 +14,6 @@ export class UIController {
     isModalOpen = false;
 
     constructor() {
-        /*  this.socket.socket.emit('newGame'); */
-
         makeAutoObservable(this, {
         }, { autoBind: true });
     }
@@ -24,7 +22,6 @@ export class UIController {
         this.gameEndModal = status;
         this.isModalOpen = true;
     }
-
 
     closeModal() {
         this.isModalOpen = false;

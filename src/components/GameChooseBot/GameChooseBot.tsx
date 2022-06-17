@@ -1,25 +1,26 @@
 import React, { useState } from "react";
-import { store } from "../../store/store";
-import { Panels } from "../../enums/enums";
-import styles from "./GameChooseBot.module.css";
-import {bots} from "../../constants/constants";
 import classNames from "classnames";
-
+import { store } from "../../store/store";
+import styles from "./GameChooseBot.module.css";
+import { bots } from "../../constants/constants";
 
 const GameChooseBot = () => {
     const [botState, setBot] = useState(bots[0]);
 
     const botButtons = bots.map((bot, index) => {
-        const  buttonClassName = classNames(
+        const buttonClassName = classNames(
             styles.bot_button_image,
-            {[styles.bot_button_image_selected]: botState.name === bot.name}
-        )
+            { [styles.bot_button_image_selected]: botState.name === bot.name },
+        );
 
-        return  <img
-            src={bot.img_url}
-            className={buttonClassName}
-            onClick={() => setBot(bot)} key={index}
-        />
+        return (
+            <img
+                src={bot.img_url}
+                className={buttonClassName}
+                onClick={() => setBot(bot)}
+                key={index}
+            />
+        );
     });
 
     const buttonClickHandler = () => {
@@ -33,7 +34,7 @@ const GameChooseBot = () => {
                 <h1 className={styles.menu_header}>Choose Bot</h1>
             </div>
             <div className={styles.content_container}>
-                <img src={botState.img_url} className={styles.bot_image}/>
+                <img src={botState.img_url} className={styles.bot_image} />
                 <div className={styles.rating_container}>
                     <p className={styles.bot_name}>{botState.name}</p>
                     <p className={styles.bot_rating}>({botState.rating})</p>
