@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { GameState, History as HistoryType, Timers } from "../types/types";
+import { GameState, History as HistoryType, Players, Timers } from "../types/types";
 import { userAuth, socket } from "../services/services";
 import { gameEndStatuses, Panels } from "../enums/enums";
 import { createBoard } from "../utils/utils";
@@ -28,7 +28,7 @@ export class Store {
             this.history.setHistory(history);
         });
 
-        this.socket.on("startGame", (roomName: string, players: any) => {
+        this.socket.on("startGame", (roomName: string, players: Players) => {
             this.game.setRoomName(roomName);
             this.game.setPlayer(players);
             this.controller.openPanel(Panels.Board, Panels.History);

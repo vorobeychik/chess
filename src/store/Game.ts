@@ -6,7 +6,7 @@ import { gameInitialState } from "../constants/constants";
 import { convertSecondsToTime, createBoard } from "../utils/utils";
 
 export class Game {
-    players: Record<string, Players> = {};
+    players: Players = {};
     roomName = "";
     selectedCell: Cell | null = null;
     gameState: GameState = gameInitialState;
@@ -39,7 +39,7 @@ export class Game {
         this.timers = convertedTimers;
     }
 
-    setPlayer(players: any) {
+    setPlayer(players: Players) {
         this.players = players;
     }
 

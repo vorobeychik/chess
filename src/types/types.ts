@@ -56,11 +56,13 @@ export interface History {
 
 export type Timers = Record<string, number>;
 
-export interface Players {
+export interface Player {
     userData: User;
     side: Sides;
     socketId: string;
 }
+
+export type Players = Record<string, Player>;
 
 export type Moves = Record<string, string[]>;
 
