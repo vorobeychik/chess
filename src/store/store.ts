@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { GameState, History as HistoryType } from "../types/types";
+import { GameState, History as HistoryType, Timers } from "../types/types";
 import { userAuth, socket } from "../services/services";
 import { gameEndStatuses, Panels } from "../enums/enums";
 import { createBoard } from "../utils/utils";
@@ -24,27 +24,23 @@ export class Store {
         this.history = new History();
 
         this.socket.on("getGameState", (state: GameState, history: HistoryType[]) => {
-            console.log("сработал");
-            console.log(state);
             this.game.setGameState(state);
             this.history.setHistory(history);
         });
 
         this.socket.on("startGame", (roomName: string, players: any) => {
-            console.log("началась", players);
             this.game.setRoomName(roomName);
             this.game.setPlayer(players);
             this.controller.openPanel(Panels.Board, Panels.History);
         });
 
-        this.socket.on("timerTick", (timers: any) => {
+        this.socket.on("timerTick", (timers: Timers) => {
             if (this.user.userData) {
                 this.game.setTimers(timers, this.user.userData?.id);
             }
         });
 
-        this.socket.on("setTimers", (timers: any) => {
-            console.log("сработали таймеры", timers);
+        this.socket.on("setTimers", (timers: Timers) => {
             if (this.user.userData) {
                 this.game.setTimers(timers, this.user.userData?.id);
             }
@@ -66,12 +62,10 @@ export class Store {
         });
 
         this.socket.on("gameFoundCreateRoom", (roomName: string) => {
-            console.log("found create");
             this.createRoom(roomName);
         });
 
         this.socket.on("gameFound", (roomName: string) => {
-            console.log("found ");
             this.joinRoom(roomName);
         });
 

@@ -40,7 +40,6 @@ export class Game {
     }
 
     setPlayer(players: any) {
-        console.log(players);
         this.players = players;
     }
 
