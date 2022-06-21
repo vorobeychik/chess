@@ -33,32 +33,32 @@ const BoardCell: FC<BoardCellProps> = observer(({ cell, selected, historyMove })
         { [styles.can_eat]: cell.figure },
     );
 
-    const dragStartHandler = (event: React.DragEvent<HTMLDivElement>) => {
+    const dragStartHandler = useCallback(() => {
         if (store.history.watchingHistory) {
             store.history.backToGame();
         }
         if (!!cell.figure && cell.figure.color === store.game.players.you.side && store.game.isYourTurn) {
             store.game.setSelectedCell(cell);
         }
-    };
+    }, [cell]);
 
-    const dropHandler = (event: React.DragEvent<HTMLDivElement>) => {
+    const dropHandler = useCallback((event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         setDragOver(false);
         if (store.game.selectedCell && store.game.selectedCell !== cell && cell.available) {
             store.move(cell.position);
             store.game.setSelectedCell(null);
         }
-    };
+    }, [store.game.selectedCell, cell]);
 
-    const dragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
+    const dragOverHandler = useCallback((event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         setDragOver(true);
-    };
+    }, []);
 
-    const dragLeaveHandler = () => {
+    const dragLeaveHandler = useCallback(() => {
         setDragOver(false);
-    };
+    }, []);
 
     const clickHandler = useCallback(() => {
         if (store.history.watchingHistory) {
@@ -69,7 +69,7 @@ const BoardCell: FC<BoardCellProps> = observer(({ cell, selected, historyMove })
         } else if (!!cell.figure && cell.figure.color === store.game.players.you.side && store.game.isYourTurn) {
             store.game.setSelectedCell(cell);
         }
-    }, []);
+    }, [store.history.watchingHistory, store.game.selectedCell, store.game.isYourTurn, cell]);
 
     return (
         <div
@@ -81,7 +81,7 @@ const BoardCell: FC<BoardCellProps> = observer(({ cell, selected, historyMove })
         >
             <p className={positionClassName}> {cell.position}</p>
             {cell.available && <div className={availableClassName} />}
-            {cell.figure?.skin && <img src={cell.figure.skin} alt="" draggable={true} onDragStart={dragStartHandler} />}
+            {cell.figure?.skin && <img className={styles.figure_image} src={cell.figure.skin} alt="" draggable={true} onDragStart={dragStartHandler} />}
         </div>
     );
 });

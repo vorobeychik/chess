@@ -1,10 +1,12 @@
 .cell{
-    width: 12.5%;
-    height: 12.5%;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
+    min-width: 32px;
+    min-height: 32px;
 }
 
 .position{
@@ -21,12 +23,6 @@
 
 .position_white{
     color: #eeeed2;
-}
-
-.cell img{
-    width: 62px;
-    height: 58px;
-    position: relative;
 }
 
 .black{
@@ -68,7 +64,11 @@
 .figure{
     width: 100%;
     height: 100%;
-    max-width: 64px;
-    max-height: 64px;
 }
+
+.figure_image{
+    width: 100%;
+    height: 100%;
+}
+
 

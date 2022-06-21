@@ -1,7 +1,7 @@
 .menu_container{
     height: 100%;
     background-color: #272522;
-    width: 40%;
+    width: clamp(300px, 60%, 600px);
     border-radius: 5px;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .bot_button_image{
-    width: 45px;
+    width: bot_button_imagepx;
     height: 45px;
     border-radius: 5px;
     cursor: pointer;
@@ -80,6 +80,7 @@
 .bot_description{
     color: hsla(0,0%,100%,.65);
     font-size: 0.8rem;
+    text-align: center;
 }
 
 .content_container{
@@ -91,4 +92,6 @@
 
 .bot_button_container{
     margin: 1rem 0;
+    display: flex;
+    justify-content: center;
 }

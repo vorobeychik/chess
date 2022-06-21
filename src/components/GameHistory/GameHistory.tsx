@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback, useMemo} from "react";
 import { observer } from "mobx-react-lite";
 import {
     CaretLeftOutlined,
@@ -15,54 +15,54 @@ import GameHistoryPoint from "./GameHistoryPoint";
 import { Panels } from "../../enums/enums";
 
 const GameHistory = observer(() => {
-    const historyPoints = store.history.historyPoints.map((historyPoint, index) => (
+    const historyPoints = useMemo(() => store.history.historyPoints.map((historyPoint, index) => (
         <GameHistoryPoint
             key={index}
             turn={index}
             isActive={index === store.history.currentHistoryPointIndex}
             historyPoint={historyPoint}
         />
-    ));
+    )), [store.history.historyPoints,store.history.currentHistoryPointIndex]);
 
-    const backToMenuClickHandler = () => {
+    const backToMenuClickHandler = useCallback(() => {
         store.controller.closeModal();
         store.controller.openPanel(Panels.Menu);
         store.reloadGameState();
-    };
+    },[]);
 
-    const nextHistoryClickHandler = () => {
+    const nextHistoryClickHandler = useCallback(() => {
         store.history.nextHistory();
         store.game.setSelectedCell(null);
-    };
+    },[]);
 
-    const firstHistoryClickHandler = () => {
+    const firstHistoryClickHandler = useCallback(() => {
         store.history.firstHistory();
         store.game.setSelectedCell(null);
-    };
+    },[]);
 
-    const lastHistoryClickHandler = () => {
+    const lastHistoryClickHandler = useCallback(() => {
         store.history.lastHistory();
         store.game.setSelectedCell(null);
-    };
+    },[]);
 
-    const replayHistoryClickHandler = () => {
+    const replayHistoryClickHandler = useCallback(() => {
         store.history.watchReplay();
         store.game.setSelectedCell(null);
-    };
+    },[]);
 
-    const stopReplayHistoryClickHandler = () => {
+    const stopReplayHistoryClickHandler = useCallback(() => {
         store.history.stopReplay();
         store.game.setSelectedCell(null);
-    };
+    },[])
 
-    const prevHistoryClickHandler = () => {
+    const prevHistoryClickHandler = useCallback(() => {
         store.history.prevHistory();
         store.game.setSelectedCell(null);
-    };
+    },[]);
 
-    const surrenderClick = () => {
+    const surrenderClick = useCallback(() => {
         store.surrender();
-    };
+    },[]);
 
     return (
         <div className={styles.menu_container}>
